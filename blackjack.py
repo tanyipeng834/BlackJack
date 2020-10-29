@@ -1,43 +1,6 @@
-"""  | Welcome to our version of the Blackjack Game |
-
-=================================================================================
-
-The goal is to get as close to 21 as possible, without going over 21.
-
-Each card has a value and a suit. The values are added for the final result.
-
-
-
-The game starts by dealing two cards to the player (you) and to the dealer.
-
-You are playing against the dealer. On each turn, you must choose if you
-
-would like to take another card or stand to stop the game and see if you won.
-
-
-
-The game ends if the total value of the player's hand goes over 21,
-
-and if the total value of the hand is below 21, the game continues
-
-until the player chooses to stand.
-
-
-
-When the game ends or when the player chooses to stand,
-
-the total value of each hand is calculated.
-
-The value that is closest to 21 without going over it wins the game.
-
-If the total value is over 21, the player or dealer
-
-automatically lose the game.
-
-=================================================================================
+""" This is a BlackJack Game that competes with the dealer with the aim
+    to have a higher card value than the dealer but not exceeding 21.
 """
-
-
 import random
 
 
@@ -128,7 +91,7 @@ class Deck:
            and suits from suits_available
         """
         for suits in Card.suits_available:
-            for i in range(0, 12):
+            for i in range(1, 12):
                 self.cards.append(Card(suits, i))
         return self
 
@@ -188,6 +151,7 @@ class Player:
         """Draws the top card from deck
         """
         self.hand.append(deck.draw_top_card())
+        return self
 
     def show_hand(self, reveal_card=False):
         """ Show hand of player every turn, while dealer shows all cards
@@ -222,13 +186,121 @@ class Player:
         option = int(input("Press 1 to Stand or 2 to Draw Card\n"))
         if option == 1:
             return option
-        else:# player draw card and shows the card
+        else:
+            # player draw card and shows the card
             self.draw_card().show_hand()
             return option
 
 
+class Game:
+    """ A class that is used to describe a BlackJack Game
+
+        ...
+
+        Attributes
+        _ _ _ _ _ _
+        deck:Deck object
+            A deck of cards that has been created
+        dealer:Player object
+            A player that has been created to play against the player
+        player:Player obkect
+            A player that will win the dealer if he or
+            she has a higher value than the dealer but below the value of 21.
+
+        Methods
+        _ _ _ _
+        start_game(self)
+            Player and dealer start the game based on turns and compete
+            who has the higher value but it must remain below 21 to remain
+            victorious.
+    """
+    INSTRUCTIONS = """  | Welcome to our version of the Blackjack Game |
+
+=================================================================================
+
+The goal is to get as close to 21 as possible, without going over 21.
+
+Each card has a value and a suit. The values are added for the final result.
+
+
+
+The game starts by dealing two cards to the player (you) and to the dealer.
+
+You are playing against the dealer. On each turn, you must choose if you
+
+would like to take another card or stand to stop the game and see if you won.
+
+
+
+The game ends if the total value of the player's hand goes over 21,
+
+and if the total value of the hand is below 21, the game continues
+
+until the player chooses to stand.
+
+
+
+When the game ends or when the player chooses to stand,
+
+the total value of each hand is calculated.
+
+The value that is closest to 21 without going over it wins the game.
+
+If the total value is over 21, the player or dealer
+
+automatically lose the game.
+
+=================================================================================
+"""
+
+    def __init__(self, deck, dealer, player):
+        self.deck = deck
+        self.dealer = dealer
+        self.player = player
+        self.turn = 1
+        self.start_game()
+
+    def start_game(self):
+        """Game of BlackJack starts and player will have an option to
+           stand or draw card to beat the dealer
+        """
+        print(Game.INSTRUCTIONS)
+        self.player.draw_card().draw_card()
+        self.dealer.draw_card().draw_card()
+        while True:
+            print(f"========== Turn #{self.turn} ==========")
+            print("The Dealer's Hand is")
+            dealer.show_hand()
+            print("Your Hand is")
+            player.show_hand()
+            if player.check_value() == 21:
+                print("You Have Won The Game")
+                break
+            elif player.check_value() > 21:
+                print("Your hand has exceeded 21 , You have lost the game")
+                break
+            else:
+                option = self.player.turn_choice()
+                if option == 1:
+                    print("The dealer's Card Was")
+                    self.dealer.show_hand(reveal_card=True)
+                    if self.player.check_value() > self.dealer.check_value():
+                        print("You have Won the Game")
+                        break
+                    elif self.player.check_value() < self.dealer.check_value():
+                        print("You have Lost The Game")
+                        break
+                    else:
+                        print("Tie")
+                        break
+                else:
+                    self.turn += 1
+
+# Create a deck of cards
 deck = Deck()
+# Create a player called John
 player = Player("John")
-player.draw_card()
-player.show_hand()
-player.check_value()
+# Create a dealer called Tom
+dealer = Player("Tom", is_dealer=True)
+# Create and Start a Game
+game = Game(deck, dealer, player)
