@@ -208,8 +208,27 @@ class Player:
                 # Keep last card hidden
                 print("X")
 
+    def check_value(self):
+        """ Check total value of cards in current hand
+        """
+        value = 0
+        for card in self.hand:
+            value += card.value
+        return value
+
+    def turn_choice(self):
+        """Player hace 2 options To draw card or to stand
+        """
+        option = int(input("Press 1 to Stand or 2 to Draw Card\n"))
+        if option == 1:
+            return option
+        else:# player draw card and shows the card
+            self.draw_card().show_hand()
+            return option
+
 
 deck = Deck()
 player = Player("John")
 player.draw_card()
 player.show_hand()
+player.check_value()
