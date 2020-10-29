@@ -97,6 +97,48 @@ class Card:
         return f"{self.value} of {self.suit}"
 
 
-card = Card("Spade", 11)
-print(str(card))
+class Deck:
+    """ A class that is used to represent 52 cards in a deck
+        of poker cards
 
+        . . .
+
+        Attributes
+        _ _ _ _ _
+        cards: list
+            Cards that are in the current deck created
+
+        Methods
+        _ _ _ _
+        build_deck(self)
+            Build a deck of cards with value ranging from
+            0 to 11 and available suits
+    """
+    def __init__(self):
+        self.__cards = []
+        self.build_deck()
+
+    @property
+    def cards(self):
+        return self.__cards
+
+    def build_deck(self):
+        for suits in Card.suits_available:
+            for i in range(0, 12):
+                self.cards.append(Card(suits, i))
+
+    def shuffle(self):
+        """Implement a shuffling alogithm on the cards
+        """
+        for i in range((len(self.cards)-1), 0, -1):
+            rand = random.randint(0, i)
+            # swap current cards with random cards
+            self.cards[i], self.cards[rand] = self.cards[rand], self.cards[rand]
+
+    def draw_top_card(self):
+        """Player draws top card
+        """
+        return self.cards.pop()
+
+
+deck = Deck()
