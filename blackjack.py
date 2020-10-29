@@ -87,7 +87,7 @@ class Deck:
         return self.__cards
 
     def build_deck(self):
-        """Build a deck of 48 cards with values from 0 to 11
+        """Build a deck of 48 cards with values from 1 to 11
            and suits from suits_available
         """
         for suits in Card.suits_available:
@@ -121,7 +121,7 @@ class Player:
         is_dealer:bool
             check if player is dealer
         hand:list
-            hand of cureent player
+            hand of current player
 
         Methods
         _ _ _ _
@@ -181,7 +181,7 @@ class Player:
         return value
 
     def turn_choice(self):
-        """Player hace 2 options To draw card or to stand
+        """Player have 2 options To draw card or to stand
         """
         option = int(input("Press 1 to Stand or 2 to Draw Card\n"))
         if option == 1:
@@ -203,7 +203,7 @@ class Game:
             A deck of cards that has been created
         dealer:Player object
             A player that has been created to play against the player
-        player:Player obkect
+        player:Player object
             A player that will win the dealer if he or
             she has a higher value than the dealer but below the value of 21.
 
@@ -267,6 +267,7 @@ automatically lose the game.
         print(Game.INSTRUCTIONS)
         self.player.draw_card().draw_card()
         self.dealer.draw_card().draw_card()
+        # Game continues until there is a winner
         while True:
             print(f"========== Turn #{self.turn} ==========")
             print("The Dealer's Hand is")
