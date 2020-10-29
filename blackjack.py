@@ -116,16 +116,21 @@ class Deck:
     """
     def __init__(self):
         self.__cards = []
-        self.build_deck()
+        # Start the game by building and shuffling the deck
+        self.build_deck().shuffle()
 
     @property
     def cards(self):
         return self.__cards
 
     def build_deck(self):
+        """Build a deck of 48 cards with values from 0 to 11
+           and suits from suits_available
+        """
         for suits in Card.suits_available:
             for i in range(0, 12):
                 self.cards.append(Card(suits, i))
+        return self
 
     def shuffle(self):
         """Implement a shuffling alogithm on the cards
@@ -141,4 +146,70 @@ class Deck:
         return self.cards.pop()
 
 
+class Player:
+    """ A class that is used to describe a player in this blackjack game
+
+        . . .
+
+        Attributes
+        _ _ _ _ _
+        name:str
+            name of player
+        is_dealer:bool
+            check if player is dealer
+        hand:list
+            hand of cureent player
+
+        Methods
+        _ _ _ _
+        draw_card(self)
+            Player draws card from the top of deck
+        show_hand(self, is_dealer=False)
+            Players and dealers show hand
+    """
+    def __init__(self, name, is_dealer=False):
+        self.__name = name
+        self.__is_dealer = is_dealer
+        self.__hand = []
+
+    @property
+    def name(self):
+        return self.__name
+
+    @property
+    def hand(self):
+        return self.__hand
+
+    @property
+    def is_dealer(self):
+        return self.__is_dealer
+
+    def draw_card(self):
+        """Draws the top card from deck
+        """
+        self.hand.append(deck.draw_top_card())
+
+    def show_hand(self, reveal_card=False):
+        """ Show hand of player every turn, while dealer shows all cards
+            except last card unless it is time to reveal cards
+        """
+        if not self.is_dealer:
+            # Print entire hand of player
+            for card in self.hand:
+                print(str(card))
+        else:
+            # Print entire hand of dealer except last card
+            for i in range(0, len(self.hand)-1):
+                print(str(self.hand[i]))
+            if reveal_card:
+                # Print last card when it is time to reveal cards
+                print(str(self.hand[-1]))
+            else:
+                # Keep last card hidden
+                print("X")
+
+
 deck = Deck()
+player = Player("John")
+player.draw_card()
+player.show_hand()
